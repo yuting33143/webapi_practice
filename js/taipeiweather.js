@@ -29,6 +29,7 @@ $(function(){
                 j++;
             }
             console.log(weather_html);
+            $('#weekday').html(weather_html);
         },
         error:function(err){
             console.log(err)
