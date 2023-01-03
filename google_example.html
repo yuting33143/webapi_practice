@@ -5,8 +5,87 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Map</title>
+    <style>
+        #map{
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+    <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
+    <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlWDn1_cVGdVzvU2ddsTJ81-9BOTflz4k&callback=initMap">
+    </script>
 </head>
 <body>
-    
+    <h1>台北市政府地圖</h1>
+    <div id="map">
+
+    </div>
+
+    <script>
+        const locations = [
+            { lat: 25.03908386028865, lng: 121.56369365434352 },
+            { lat: 25.039531185002097,lng: 121.55745461244194 },
+            { lat: 25.03715936085208,  lng: 121.55382826584906 },
+            { lat: 25.038578572616956,  lng: 121.56007244844388 },
+            { lat: 25.03752874631684,  lng: 121.56324818392167 }
+        ];
+        // Initialize and add the map
+        function initMap() {
+        // The location of Uluru
+        const cityhall = { lat: 25.03908386028865, lng: 121.56369365434352 };
+        // The map, centered at Uluru
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 15,
+            center: cityhall,
+        });
+        // The marker, positioned at Uluru
+        // const marker = new google.maps.Marker({
+        //     position: cityhall,
+        //     map: map,
+        // });
+
+        const labels = ["台北市政府","台北101","國父紀年館","公園","夜市"];
+        const marker_labels = "ABCDE";
+        const markers = locations.map((position, i) => {
+            const label = marker_labels[i];
+            const marker = new google.maps.Marker({
+            position,
+            label,
+            icon:"placeholder.png"
+            });
+            let infowindow = new google.maps.InfoWindow({
+                    content: labels[i],
+                    ariaLabel: labels[i],
+                });
+            marker.addListener("click", () => {
+                // infoWindow.setContent(label);
+                infoWindow.open(map, marker);
+            });
+            return marker;
+        });
+
+        const markerCluster = new markerClusterer.MarkerClusterer({ map, markers });
+
+        
+
+        // const info_string = "<h3>台北市政府</h3><p>臺北市政府是中華民國臺北市的地方行政機關，在中華民國政府架構中為直轄市自治的行政機關</p>";
+        // const infowindow = new google.maps.InfoWindow({
+        //     content: info_string,
+        //     ariaLabel: "Uluru",
+        // });
+
+        // marker.addListener("click", () => {
+        //     infowindow.open({
+        //     anchor: marker,
+        //     map,
+        //     });
+        // });
+
+
+        }
+
+        window.initMap = initMap;
+    </script>
 </body>
 </html>
